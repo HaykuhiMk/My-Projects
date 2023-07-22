@@ -1,0 +1,9 @@
+//client connect
+nc localhost 8080
+
+//request
+GET / HTTP/1.1
+Host: localhost
+
+//link
+http://127.0.0.1:8080
