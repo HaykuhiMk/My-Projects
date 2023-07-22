@@ -1,0 +1,17 @@
+gcc udp_server.c -o udp_server
+./udp_server
+
+gcc udp_server.c -o udp_server.exe -lws2_32
+./udp_server.exe
+
+gcc udp_client.c -o udp_client
+gcc udp_client.c -o udp_client.exe -lws2_32
+./udp_client 127.0.0.1 8080
+GET / HTTP/1.1
+Host: example.com
+
+gcc udp_simple_client.c -o udp_simple_client
+./udp_simple_client
+
+gcc udp_simple_client.c -o udp_simple_client.exe -lws2_32
+./udp_simple_client.exe
