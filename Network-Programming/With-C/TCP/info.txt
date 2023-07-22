@@ -1,0 +1,11 @@
+gcc tcp_serve_toupper.c -o tcp_serve_toupper
+./tcp_serve_toupper
+
+gcc tcp_serve_toupper.c -o tcp_serve_toupper.exe -lws2_32
+tcp_serve_toupper.exe
+
+gcc tcp_client.c -o tcp_client
+gcc tcp_client.c -o tcp_client.exe -lws2_32
+tcp_client 127.0.0.1 8080
+GET / HTTP/1.1
+Host: example.com
