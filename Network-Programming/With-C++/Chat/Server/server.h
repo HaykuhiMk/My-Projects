@@ -1,19 +1,20 @@
+#ifndef SERVER_H
+#define SERVER_H
 #include "conf.h"
 #include <string>
 #include <iostream>
-#ifndef SERVER_H
-#define SERVER_H
 
 class Server 
 {
+public:
+    Server();
+    ~Server();
+    void run();
+
 private:
     SOCKET serverSocket;
     struct addrinfo serverAddr;
 
-public:
-    Server();
-    ~Server();
-    void startListening();
 };
 
 #endif      //SERVER_H
