@@ -1,8 +1,8 @@
 #include "server.h"
 
-int main() {
+int main() 
+{
     Server server;
-    server.startListening();
-
+    server.run();
     return 0;
 }
