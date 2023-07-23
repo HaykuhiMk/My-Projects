@@ -1,11 +1,11 @@
 #include "server.h"
-#include <ctype.h>
 
 Server::Server() 
 {
 #ifdef _WIN32
     WSADATA wsaData;
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData)) 
+    //initialization the Winsock library
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData))       
     {
         std::cerr << "Failed to initialize!" << std::endl;
         exit(EXIT_FAILURE);
@@ -47,7 +47,7 @@ Server::~Server()
     std::cout << "Finished." << std::endl;
 }
 
-void Server::startListening() 
+void Server::run() 
 {
     std::cout << "Listening.." << std::endl;
     if (listen(serverSocket, 10) < 0) 
@@ -60,7 +60,7 @@ void Server::startListening()
     FD_SET(serverSocket, &master);
     SOCKET maxSocket = serverSocket;
     std::cout << "Waiting for connections..." << std::endl;
-    while (1) 
+    while (true) 
     {
         fd_set reads;       //store socket set
         reads = master;
@@ -70,7 +70,7 @@ void Server::startListening()
             exit(EXIT_FAILURE);
         }
         SOCKET i;
-        for(i = 1; i <= maxSocket; ++i) 
+        for (i = 0; i <= maxSocket; ++i) 
         {
             if (FD_ISSET(i, &reads)) 
             {
@@ -89,7 +89,7 @@ void Server::startListening()
                     {
                         maxSocket = socketClient;
                     }
-                    char addressBuffer[100];
+                    char addressBuffer[NI_MAXHOST];
                     getnameinfo((struct sockaddr*)&clientAddress, clientLen,
                             addressBuffer, sizeof(addressBuffer), 0, 0,
                             NI_NUMERICHOST);
@@ -98,7 +98,7 @@ void Server::startListening()
                 else 
                 {
                     char read[1024];
-                    int bytesReceived = recv(i, read, 1024, 0);
+                    int bytesReceived = recv(i, read, sizeof(read), 0);
                     if (bytesReceived < 1) 
                     {
                         FD_CLR(i, &master);
@@ -106,19 +106,15 @@ void Server::startListening()
                         continue;
                     }
                     SOCKET j;
-                    for (j = 1; j <= maxSocket; ++j) 
+                    for (j = 0; j <= maxSocket; ++j) 
                     {
-                        if (FD_ISSET(j, &master)) 
+                        if (FD_ISSET(j, &master) && j != serverSocket && j != i)
                         {
-                            if (j == serverSocket || j == i)
-                                continue;
-                            else
-                                send(j, read, bytesReceived, 0);
+                            send(j, read, bytesReceived, 0);
                         }
                     }
                 }
-
-            }       //if FD_ISSET
-        }       //for i to max_socket
-    }        //while(1)
-}
+            }     
+        }   
+    }  
+}        
