@@ -1,5 +1,5 @@
 #include "client.h"
-#include <conio.h>
+#include <thread>
 
 Client::Client(const char* serverIP, const char* port)
 {
@@ -60,43 +60,34 @@ Client::~Client()
 void Client::sendMessage() 
 {
     std::cout << "To send data, enter text followed by enter." << std::endl;
-    while(1) 
+    // Separate thread for receiving messages
+    // This thread is responsible for continuously receiving data from a client socket
+    std::thread receiverThread([&]() 
     {
-        fd_set reads;       //store socket set
-        FD_ZERO(&reads);        //zero it
-        FD_SET(clientSocket, &reads);        //set it 
-#ifndef _WIN32
-        FD_SET(0, &reads);      
-#endif
-        struct timeval timeout;
-        timeout.tv_sec = 0;
-        timeout.tv_usec = 100000;
-        if (select(clientSocket+1, &reads, 0, 0, &timeout) < 0)      // check to see whether the socket is set in reads
-        {
-            perror("Error selecting!");
-            exit(EXIT_FAILURE);
-        }
-        if (FD_ISSET(clientSocket, &reads)) 
+        while (true) 
         {
             char read[4096];
             int bytesReceived = recv(clientSocket, read, 4096, 0);
-            if (bytesReceived < 1) 
+            if (bytesReceived <= 0) 
             {
                 std::cout << "Connection closed by peer." << std::endl;
                 break;
             }
-            std::cout << "Received " << bytesReceived << " : " << read << std::endl;
+            read[bytesReceived] = '\0'; // Null-terminate the received data
+            std::cout << "Received " << bytesReceived << " bytes: " << read << std::endl;
         }
-#ifdef _WIN32
-        if(_kbhit()) {
-#else
-        if(FD_ISSET(0, &reads)) {
-#endif
-            char read[4096];
-            if (!fgets(read, 4096, stdin)) break;
-            std::cout << "Sending: " << read << std::endl;
-            int bytesSent = send(clientSocket, read, strlen(read), 0);
-            std::cout << "Sent " << bytesSent << " bytes." << std::endl;
-        }
-    } //end while(1)  
+    });
+    while (true) 
+    {
+        char read[4096];
+        if (!fgets(read, sizeof(read), stdin)) break;
+        read[strcspn(read, "\n")] = '\0'; // Remove trailing newline character
+        std::cout << "Sending: " << read << std::endl;
+        int bytesSent = send(clientSocket, read, strlen(read), 0);
+        std::cout << "Sent " << bytesSent << " bytes." << std::endl;
+    }
+
+    // Cleanup and join the receiver thread
+    // The main thread essentially waits for the receiverThread to finish before proceeding. 
+    receiverThread.join();
 }
