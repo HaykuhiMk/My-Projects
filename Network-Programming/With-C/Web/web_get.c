@@ -209,6 +209,7 @@ int main(int argc, char *argv[])
             } //if (body)
         } //if FDSET
     } //end while(1)
+finish:
     printf("\nClosing socket...\n");
     CLOSESOCKET(server);
 #if defined(_WIN32)
