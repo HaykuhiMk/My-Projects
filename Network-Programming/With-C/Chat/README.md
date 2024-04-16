@@ -21,6 +21,8 @@ To run this application, you need:
 
 ~ POSIX-compliant operating system (Linux, macOS)
 
+~ MinGW (Minimalist GNU for Windows) or Cygwin (Windows)
+
 ~ Basic understanding of network programming concepts
 
 ## Running with Manual Compilation
@@ -30,9 +32,25 @@ To run this application, you need:
 2.Navigate to the directory where you have downloaded or cloned the Chat repository.
 
 3.Compile the source code files using the following command:
-### Run the server:
+### Run the server in Unix:
 
 #### gcc main.c server.c -o server
 #### ./server
+
+### Run the client in Unix:
+
+#### gcc main.c client.c -o client
+#### ./client
+
+### Run the server in Windows:
+
+#### gcc main.c server.c -o server -lpthread
+#### server.exe
+
+### Run the client in Windows:
+
+#### gcc main.c client.c -o client -lpthread
+#### client.exe
+
 
 
