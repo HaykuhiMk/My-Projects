@@ -17,6 +17,22 @@ This is a simple chat application implemented in C programming language using so
 ## Prerequisites
 To run this application, you need:
 
-. A C compiler (e.g., gcc)
-. POSIX-compliant operating system (Linux, macOS)
-. Basic understanding of network programming concepts
+~ A C compiler (e.g., gcc)
+
+~ POSIX-compliant operating system (Linux, macOS)
+
+~ Basic understanding of network programming concepts
+
+## Running with Manual Compilation
+
+1.Open a terminal or command prompt.
+
+2.Navigate to the directory where you have downloaded or cloned the Chat repository.
+
+3.Compile the source code files using the following command:
+### Run the server:
+
+#### gcc main.c server.c -o server
+#### ./server
+
+
