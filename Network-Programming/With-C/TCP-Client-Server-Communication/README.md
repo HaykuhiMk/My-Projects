@@ -50,4 +50,5 @@ And to work in Windows, you need to type the following commands in the terminal:
 Check out the accompanying Medium article for a detailed explanation of the TCP client-server communication project. The article covers the design principles, implementation details, and usage instructions for both the server and client programs. Additionally, it provides insights into the underlying concepts of socket programming and how they are applied in this project.
 
 [Link to Medium Article](https://medium.com/@haykuhimkrtchyan09/mastering-network-programming-a-comprehensive-guide-to-socket-programming-in-c-c419c9d94473)
+
 Feel free to read the article for a deeper understanding of the project and leave any feedback or questions in the comments section. Your feedback is valuable and helps improve the quality of the project and the accompanying article.
